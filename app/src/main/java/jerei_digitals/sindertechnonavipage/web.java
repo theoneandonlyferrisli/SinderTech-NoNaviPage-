@@ -29,10 +29,6 @@ public class web extends AppCompatActivity {
     private static final String TARGET_URL = "http://192.168.50.200:8877/";
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    public static final int TYPE_WIFI = 1;
-    public static final int TYPE_CELLULAR = 2;
-    public static final int TYPE_NOT_CONNECTED = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
