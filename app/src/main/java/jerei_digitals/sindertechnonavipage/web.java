@@ -28,6 +28,7 @@ public class web extends AppCompatActivity {
     private WebView webView;
     private static final String TARGET_URL = "http://192.168.50.200:8877/";
     private SwipeRefreshLayout swipeRefreshLayout;
+    private BroadcastReceiver mReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class web extends AppCompatActivity {
         setContentView(R.layout.activity_web);
 
         // 监听手机网络变化；警告用户如无网络连接。
-        BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        mReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 boolean noConnectivity = intent.
@@ -51,6 +52,7 @@ public class web extends AppCompatActivity {
                                     }
                                 })
                                 .setNegativeButton("忽略", null)
+                                .setCancelable(false)
                                 .show();
 
                 } else {
@@ -155,5 +157,21 @@ public class web extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 }
