@@ -1,10 +1,19 @@
 package jerei_digitals.sindertechnonavipage;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.provider.Settings;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,10 +29,42 @@ public class web extends AppCompatActivity {
     private static final String TARGET_URL = "http://192.168.50.200:8877/";
     private SwipeRefreshLayout swipeRefreshLayout;
 
+    public static final int TYPE_WIFI = 1;
+    public static final int TYPE_CELLULAR = 2;
+    public static final int TYPE_NOT_CONNECTED = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
+
+        // 监听手机网络变化；警告用户如无网络连接。
+        BroadcastReceiver mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                boolean noConnectivity = intent.
+                        getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
+                if (noConnectivity) {
+                        new AlertDialog.Builder(web.this)
+                                .setTitle("警告")
+                                .setMessage("当前无网络连接,是否前往设置？")
+                                .setPositiveButton("设置", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+                                    }
+                                })
+                                .setNegativeButton("忽略", null)
+                                .show();
+
+                } else {
+                    Toast.makeText(web.this, "网络已链接！", Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+
+        // 注册网络变化监听器至本页面。
+        registerReceiver(mReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
         // 初始化WebView
         webView = (WebView) findViewById(R.id.webView);
@@ -92,7 +133,6 @@ public class web extends AppCompatActivity {
 
         return super.onKeyDown(keyCode, event);
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
