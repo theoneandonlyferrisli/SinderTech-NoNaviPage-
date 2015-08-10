@@ -58,7 +58,7 @@ public class web extends AppCompatActivity {
                                 .show();
 
                 } else {
-                    Toast.makeText(web.this, "网络已链接！", Toast.LENGTH_LONG).show();
+                    Toast.makeText(web.this, "网络已链接！", Toast.LENGTH_SHORT).show();
                 }
             }
         };
