@@ -28,6 +28,7 @@ public class web extends AppCompatActivity {
     private WebView webView;
     private static final String TARGET_URL = "http://192.168.50.200:8877/";
     private SwipeRefreshLayout swipeRefreshLayout;
+
     private BroadcastReceiver mReceiver;
 
     @Override
@@ -118,6 +119,8 @@ public class web extends AppCompatActivity {
                 webView.loadUrl(webView.getUrl());
             }
         });
+
+//        Log.i("onCreate", "onCreate Entered");
     }
 
     // 覆盖onKeyDown函数，当有可返回的网页浏览记录时将返回键功能改为后退至上一网页
@@ -157,5 +160,12 @@ public class web extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        // 注销网络监听器
+        unregisterReceiver(mReceiver);
+        super.onDestroy();
     }
 }
