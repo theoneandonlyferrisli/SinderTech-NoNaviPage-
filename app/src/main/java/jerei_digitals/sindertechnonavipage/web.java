@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.provider.Settings;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -17,8 +15,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -28,6 +24,7 @@ public class web extends AppCompatActivity {
     private WebView webView;
     private static final String TARGET_URL = "http://192.168.50.200:8877/";
     private SwipeRefreshLayout swipeRefreshLayout;
+    private boolean isFirstLaunched = true;
 
     private BroadcastReceiver mReceiver;
 
@@ -57,7 +54,10 @@ public class web extends AppCompatActivity {
                                 .show();
 
                 } else {
-                    Toast.makeText(web.this, "网络已链接！", Toast.LENGTH_SHORT).show();
+                    if (isFirstLaunched)
+                        isFirstLaunched = false;
+                    else
+                        Toast.makeText(web.this, "网络已链接！", Toast.LENGTH_SHORT).show();
                 }
             }
         };
