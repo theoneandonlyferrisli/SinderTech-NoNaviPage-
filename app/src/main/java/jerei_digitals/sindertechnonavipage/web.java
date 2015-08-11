@@ -119,8 +119,6 @@ public class web extends AppCompatActivity {
                 webView.loadUrl(webView.getUrl());
             }
         });
-
-//        Log.i("onCreate", "onCreate Entered");
     }
 
     // 覆盖onKeyDown函数，当有可返回的网页浏览记录时将返回键功能改为后退至上一网页
